@@ -28,11 +28,11 @@ Your submission will be evaluated on the following aspects
    * While we favour functionality over UI/UX your submission should be easy to use (from a user's perspective)
    * Your solution has to compile
 
-### Requirements
+### (Non negotiable) Requirements
 
-The application may be done in **Java or Swift** (No Kotlin, no Obj-C). Otherwise, you have complete freedom in terms of how you implement the solution, as long as all user requirements are met.
+The application may be done in **Java or Swift** (No Kotlin, no Obj-C). 
 
-Note however, that **no third party libraries may be used**. You can use any native tools available to you from the platform, but no open sourced, or third party libraries.
+**No third party libraries may be used**. You can use any native tools available to you from the platform, but no open sourced, or third party libraries. 
 
 ### Project's API
 
@@ -48,3 +48,24 @@ https://rickandmortyapi.com/
 
 If you have any questions during the challenge feel free to email recruitment@guestlogix.com Whether it be a question about the requirements, submitting, anything, just send the email!
 
+### F.A.Q
+
+* Why are third party libraries not allowed?
+     For two reasons: 
+      1. Because we want to gauge your knowledge regarding iOS/Android. We're testing your understanding and domain with native networking methods and patterns and if you use external libraries then all the heavy lifting is done for you and the test becomes more like a chore than an actual test. 
+     2. Because we're building a native SDK for iOS and Android, and as such, we want it to talk nicely with other potential             libraries our clients may be using. To take away the burden of keeping track of compatibility issues and maintenance issues with other libraries we're doing everything 100% native
+     
+* Can I use Alamofire/KingFisher/OkHttp/Retrofit/Gson/SwiftyJson/Rx....? 
+    No, only native libraries. 
+    
+* But Google/Facebook/Etc...maintains/created the library I intend to use...
+  Still no...
+  
+* But its a very popular library and all the cool kids are using it!
+  Nope, no external libraries. 
+ 
+* OK so which libraries can I use? 
+  For Android, you can find all the available libraries for you here: https://developer.android.com/reference 
+  If the library is not listed there, then you can't use it. 
+  
+  For iOS you can find all the availabe libraries for you here: https://developer.apple.com/documentation
