@@ -56,16 +56,16 @@ If you have any questions during the challenge feel free to email recruitment@gu
      2. Because we're building a native SDK for iOS and Android, and as such, we want it to talk nicely with other potential             libraries our clients may be using. To take away the burden of keeping track of compatibility issues and maintenance issues with other libraries we're doing everything 100% native
      
 * Can I use Alamofire/KingFisher/OkHttp/Retrofit/Gson/SwiftyJson/Rx....? 
-    No, only native libraries. 
+    * No, only native libraries. Note for Android developers: This includes Volley!! 
     
 * But Google/Facebook/Etc...maintains/created the library I intend to use...
-  Still no...
+  * Still no...
   
 * But its a very popular library and all the cool kids are using it!
-  Nope, no external libraries. 
+  * Nope, no external libraries. 
  
 * OK so which libraries can I use? 
-  For Android, you can find all the available libraries for you here: https://developer.android.com/reference 
+  * For Android, you can find all the available libraries for you here: https://developer.android.com/reference 
   If the library is not listed there, then you can't use it. 
   
-  For iOS you can find all the availabe libraries for you here: https://developer.apple.com/documentation
+  * For iOS you can find all the availabe libraries for you here: https://developer.apple.com/documentation
