@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:background="@color/characterTitleBackground"
+                android:background="@color/characterDetailsNameBackground"
                 android:padding="@dimen/keyLine1">
 
                 <LinearLayout
