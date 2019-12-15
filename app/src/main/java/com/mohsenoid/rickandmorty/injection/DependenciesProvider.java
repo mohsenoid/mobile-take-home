@@ -27,6 +27,8 @@ import com.mohsenoid.rickandmorty.ui.episode.list.EpisodeListContract;
 import com.mohsenoid.rickandmorty.ui.episode.list.EpisodeListFragment;
 import com.mohsenoid.rickandmorty.ui.episode.list.EpisodeListPresenter;
 import com.mohsenoid.rickandmorty.ui.episode.list.adapter.EpisodeListAdapter;
+import com.mohsenoid.rickandmorty.ui.util.ImageDownloader;
+import com.mohsenoid.rickandmorty.ui.util.ImageDownloaderImpl;
 
 import java.util.List;
 
@@ -39,28 +41,28 @@ public class DependenciesProvider {
     }
 
     private Datastore getDatastore() {
-        return new DatastoreImpl(context);
+        return DatastoreImpl.getInstance(context);
     }
 
     private NetworkHelper getNetworkHelper() {
-        return new NetworkHelperImpl(ApiConstants.BASE_URL);
+        return NetworkHelperImpl.getInstance(ApiConstants.BASE_URL);
     }
 
     private ApiClient getApiClient() {
         NetworkHelper networkHelper = getNetworkHelper();
-        return new ApiClientImpl(networkHelper);
+        return ApiClientImpl.getInstance(networkHelper);
     }
 
     private TaskExecutor getIoTaskExecutor() {
-        return new IoTaskExecutor();
+        return IoTaskExecutor.getInstance();
     }
 
     private TaskExecutor getMainTaskExecutor() {
-        return new MainTaskExecutor();
+        return MainTaskExecutor.getInstance();
     }
 
     private ConfigProvider getConfigProvider() {
-        return new ConfigProviderImpl(context);
+        return ConfigProviderImpl.getInstance(context);
     }
 
     private Repository getRepository() {
@@ -70,7 +72,20 @@ public class DependenciesProvider {
         TaskExecutor mainTaskExecutor = getMainTaskExecutor();
         ConfigProvider configProvider = getConfigProvider();
 
-        return new RepositoryImpl(datastore, apiClient, ioTaskExecutor, mainTaskExecutor, configProvider);
+        return RepositoryImpl.getInstance(datastore, apiClient, ioTaskExecutor, mainTaskExecutor, configProvider);
+    }
+
+    private String getCacheDirectoryPath() {
+        return context.getCacheDir().getAbsolutePath();
+    }
+
+    public ImageDownloader getImageDownloader() {
+        NetworkHelper networkHelper = getNetworkHelper();
+        String cacheDirectoryPath = getCacheDirectoryPath();
+        TaskExecutor ioTaskExecutor = getIoTaskExecutor();
+        TaskExecutor mainTaskExecutor = getMainTaskExecutor();
+
+        return ImageDownloaderImpl.getInstance(networkHelper, cacheDirectoryPath, ioTaskExecutor, mainTaskExecutor);
     }
 
     public EpisodeListFragment getEpisodeListFragment() {
@@ -100,7 +115,8 @@ public class DependenciesProvider {
     }
 
     public CharacterListAdapter getCharacterListAdapter(CharacterListAdapter.ClickListener listener) {
-        return new CharacterListAdapter(listener);
+        ImageDownloader imageDownloader = getImageDownloader();
+        return new CharacterListAdapter(imageDownloader, listener);
     }
 
     public CharacterDetailsFragment getCharacterDetailsFragment(int characterId) {
