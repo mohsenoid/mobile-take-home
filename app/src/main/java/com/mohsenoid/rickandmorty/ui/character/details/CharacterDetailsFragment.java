@@ -23,9 +23,7 @@ import com.mohsenoid.rickandmorty.ui.util.ImageDownloader;
 
 public class CharacterDetailsFragment extends BaseFragment implements CharacterDetailsContract.View {
 
-    private static String ARG_CHARACTER_ID = "character_id";
-
-    private int characterId;
+    private static final String ARG_CHARACTER_ID = "character_id";
 
     private CharacterDetailsContract.Presenter presenter;
     private ImageDownloader imageDownloader;
@@ -61,18 +59,20 @@ public class CharacterDetailsFragment extends BaseFragment implements CharacterD
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!extractCharacterId()) {
+        int characterId = extractCharacterId();
+        if (characterId == -1) {
             Toast.makeText(getContext(), "Character id is missing!", Toast.LENGTH_SHORT).show();
             parentActivityOnBackPressed();
+        } else {
+            presenter.setCharacterId(characterId);
         }
     }
 
-    private boolean extractCharacterId() {
+    private int extractCharacterId() {
         Bundle args = getArguments();
-        if (args == null) return false;
+        if (args == null) return -1;
 
-        characterId = args.getInt(ARG_CHARACTER_ID, -1);
-        return characterId != -1;
+        return args.getInt(ARG_CHARACTER_ID, -1);
     }
 
     @Override
@@ -112,7 +112,7 @@ public class CharacterDetailsFragment extends BaseFragment implements CharacterD
     public void onResume() {
         super.onResume();
 
-        presenter.loadCharacter(characterId);
+        presenter.loadCharacter();
     }
 
     @Override
@@ -152,7 +152,7 @@ public class CharacterDetailsFragment extends BaseFragment implements CharacterD
     }
 
     @Override
-    public void onCharacterQueryResult(int characterId, CharacterModel character) {
+    public void setCharacter(CharacterModel character) {
         imageDownloader.downloadImage(character.getImage(), characterImage, characterImageProgress);
 
         characterName.setText(character.getName());

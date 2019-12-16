@@ -18,12 +18,14 @@ import java.io.IOException;
 public class ImageDownloaderImpl implements ImageDownloader {
 
     private static final String SEPARATOR = "/";
+
     @VisibleForTesting
     public static ImageDownloaderImpl instance;
-    private NetworkHelper networkHelper;
-    private String cacheDirectoryPath;
-    private TaskExecutor ioTaskExecutor;
-    private TaskExecutor mainTaskExecutor;
+
+    private final NetworkHelper networkHelper;
+    private final String cacheDirectoryPath;
+    private final TaskExecutor ioTaskExecutor;
+    private final TaskExecutor mainTaskExecutor;
 
     private ImageDownloaderImpl(NetworkHelper networkHelper, String cacheDirectoryPath, TaskExecutor ioTaskExecutor, TaskExecutor mainTaskExecutor) {
         this.networkHelper = networkHelper;
@@ -32,7 +34,7 @@ public class ImageDownloaderImpl implements ImageDownloader {
         this.mainTaskExecutor = mainTaskExecutor;
     }
 
-    public static ImageDownloaderImpl getInstance(NetworkHelper networkHelper, String cacheDirectoryPath, TaskExecutor ioTaskExecutor, TaskExecutor mainTaskExecutor) {
+    public static synchronized ImageDownloaderImpl getInstance(NetworkHelper networkHelper, String cacheDirectoryPath, TaskExecutor ioTaskExecutor, TaskExecutor mainTaskExecutor) {
         if (instance == null)
             instance = new ImageDownloaderImpl(networkHelper, cacheDirectoryPath, ioTaskExecutor, mainTaskExecutor);
 
@@ -57,7 +59,7 @@ public class ImageDownloaderImpl implements ImageDownloader {
                 }
             }
 
-            Bitmap bitmap = loadBitmapFile(imageFile);
+            Bitmap bitmap = loadBitmapFile(imageFile, imageView.getWidth(), imageView.getHeight());
 
             mainTaskExecutor.execute(() -> {
                 if (progress != null) progress.setVisibility(View.GONE);
@@ -75,9 +77,12 @@ public class ImageDownloaderImpl implements ImageDownloader {
         return urlParts[urlParts.length - 1];
     }
 
-    private Bitmap loadBitmapFile(File imageFile) {
+    private Bitmap loadBitmapFile(File imageFile, int outWidth, int outHeight) {
         try {
-            return BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.outWidth = outWidth;
+            options.outHeight = outHeight;
+            return BitmapFactory.decodeFile(imageFile.getAbsolutePath(), options);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

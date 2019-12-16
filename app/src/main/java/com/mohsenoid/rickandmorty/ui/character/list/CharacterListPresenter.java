@@ -10,11 +10,10 @@ import java.util.List;
 
 public class CharacterListPresenter implements CharacterListContract.Presenter {
 
+    private final Repository repository;
+    private final ConfigProvider configProvider;
+
     private CharacterListContract.View view = null;
-
-    private Repository repository;
-    private ConfigProvider configProvider;
-
     private List<Integer> characterIds;
 
     public CharacterListPresenter(Repository repository, ConfigProvider configProvider) {
@@ -33,9 +32,13 @@ public class CharacterListPresenter implements CharacterListContract.Presenter {
     }
 
     @Override
-    public void loadCharacters(List<Integer> characterIds) {
-        if (view != null) view.showLoading();
+    public void setCharacterIds(List<Integer> characterIds) {
         this.characterIds = characterIds;
+    }
+
+    @Override
+    public void loadCharacters() {
+        if (view != null) view.showLoading();
 
         queryCharacters();
     }
@@ -50,7 +53,7 @@ public class CharacterListPresenter implements CharacterListContract.Presenter {
             @Override
             public void onSuccess(List<CharacterModel> characters) {
                 if (view != null) {
-                    view.onCharactersQueryResult(characters);
+                    view.setCharacters(characters);
                     view.hideLoading();
                 }
             }
@@ -78,7 +81,7 @@ public class CharacterListPresenter implements CharacterListContract.Presenter {
 
             @Override
             public void onSuccess(CharacterModel character) {
-                view.onCharacterKilled(character);
+                view.updateCharacter(character);
             }
 
             @Override

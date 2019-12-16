@@ -6,20 +6,22 @@ import com.mohsenoid.rickandmorty.ui.base.BaseView;
 
 import java.util.List;
 
-public class CharacterListContract {
+public interface CharacterListContract {
 
-    public interface View extends BaseView {
+    interface View extends BaseView {
 
         void onNoOfflineData();
 
-        void onCharactersQueryResult(List<CharacterModel> characters);
+        void setCharacters(List<CharacterModel> characters);
 
-        void onCharacterKilled(CharacterModel character);
+        void updateCharacter(CharacterModel character);
     }
 
-    public interface Presenter extends BasePresenter<View> {
+    interface Presenter extends BasePresenter<View> {
 
-        void loadCharacters(List<Integer> characterIds);
+        void setCharacterIds(List<Integer> characterIds);
+
+        void loadCharacters();
 
         void killCharacter(CharacterModel character);
     }

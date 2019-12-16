@@ -18,11 +18,11 @@ public class RepositoryImpl implements Repository {
     @VisibleForTesting
     public static RepositoryImpl instance;
 
-    private Datastore datastore;
-    private ApiClient apiClient;
-    private TaskExecutor ioTaskExecutor;
-    private TaskExecutor mainTaskExecutor;
-    private ConfigProvider configProvider;
+    private final Datastore datastore;
+    private final ApiClient apiClient;
+    private final TaskExecutor ioTaskExecutor;
+    private final TaskExecutor mainTaskExecutor;
+    private final ConfigProvider configProvider;
 
     private RepositoryImpl(Datastore datastore, ApiClient apiClient, TaskExecutor ioTaskExecutor, TaskExecutor mainTaskExecutor, ConfigProvider configProvider) {
         this.datastore = datastore;
@@ -32,7 +32,7 @@ public class RepositoryImpl implements Repository {
         this.configProvider = configProvider;
     }
 
-    public static RepositoryImpl getInstance(Datastore datastore, ApiClient apiClient, TaskExecutor ioTaskExecutor, TaskExecutor mainTaskExecutor, ConfigProvider configProvider) {
+    public static synchronized RepositoryImpl getInstance(Datastore datastore, ApiClient apiClient, TaskExecutor ioTaskExecutor, TaskExecutor mainTaskExecutor, ConfigProvider configProvider) {
         if (instance == null)
             instance = new RepositoryImpl(datastore, apiClient, ioTaskExecutor, mainTaskExecutor, configProvider);
 

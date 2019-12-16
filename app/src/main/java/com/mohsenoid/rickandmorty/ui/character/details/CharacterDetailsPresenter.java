@@ -9,10 +9,12 @@ import com.mohsenoid.rickandmorty.model.CharacterModel;
 
 public class CharacterDetailsPresenter implements CharacterDetailsContract.Presenter {
 
-    private CharacterDetailsContract.View view = null;
+    private final Repository repository;
+    private final ConfigProvider configProvider;
 
-    private Repository repository;
-    private ConfigProvider configProvider;
+    private int characterId;
+
+    private CharacterDetailsContract.View view = null;
 
     public CharacterDetailsPresenter(Repository repository, ConfigProvider configProvider) {
         this.repository = repository;
@@ -30,7 +32,12 @@ public class CharacterDetailsPresenter implements CharacterDetailsContract.Prese
     }
 
     @Override
-    public void loadCharacter(int characterId) {
+    public void setCharacterId(int characterId) {
+        this.characterId = characterId;
+    }
+
+    @Override
+    public void loadCharacter() {
         if (view != null) view.showLoading();
 
         queryCharacter(characterId);
@@ -46,7 +53,7 @@ public class CharacterDetailsPresenter implements CharacterDetailsContract.Prese
             @Override
             public void onSuccess(CharacterModel character) {
                 if (view != null) {
-                    view.onCharacterQueryResult(characterId, character);
+                    view.setCharacter(character);
                     view.hideLoading();
                 }
             }

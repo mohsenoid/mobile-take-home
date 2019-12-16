@@ -17,10 +17,9 @@ import java.util.List;
 
 public class CharacterListActivity extends BaseActivity {
 
-    static String TAG = CharacterListActivity.class.getSimpleName();
-    static String TAG_CHARACTER_LIST_FRAGMENT = "character_list_fragment";
-
-    static String ARG_CHARACTER_IDS = "character_ids";
+    private static final String TAG = CharacterListActivity.class.getSimpleName();
+    private static final String TAG_CHARACTER_LIST_FRAGMENT = "character_list_fragment";
+    private static final String ARG_CHARACTER_IDS = "character_ids";
 
     private CharacterListFragment characterListFragment;
 
@@ -60,6 +59,6 @@ public class CharacterListActivity extends BaseActivity {
     private void attachFragments() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.container, characterListFragment, TAG_CHARACTER_LIST_FRAGMENT);
-        fragmentTransaction.commitAllowingStateLoss();
+        fragmentTransaction.commit();
     }
 }

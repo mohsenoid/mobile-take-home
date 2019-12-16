@@ -17,13 +17,13 @@ public class NetworkHelperImpl implements NetworkHelper {
 
     private static NetworkHelperImpl instance;
 
-    private String baseUrl;
+    private final String baseUrl;
 
     private NetworkHelperImpl(String baseUrl) {
         this.baseUrl = baseUrl;
     }
 
-    public static NetworkHelperImpl getInstance(String baseUrl) {
+    public static synchronized NetworkHelperImpl getInstance(String baseUrl) {
         if (instance == null)
             instance = new NetworkHelperImpl(baseUrl);
 
